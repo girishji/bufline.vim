@@ -55,7 +55,7 @@ M.bufferstr = function(maxwidth)
           emphasize = "%4*" .. emphasize .. "%*"
         end
         local higrp = M.opts.highlight and "%2*" or ""
-        table.insert(bufs, pos, higrp .. bufname .. bufnr .. isbufmodified(buf) .. "%*")
+        table.insert(bufs, pos, higrp .. bufname .. bufnr .. isbufmodified(buf) .. "%*" .. emphasize)
       else
         local higrp = M.opts.highlight and "%3*" or ""
         table.insert(bufs, pos, higrp .. bufname .. bufnr .. isbufmodified(buf) .. "%*")
