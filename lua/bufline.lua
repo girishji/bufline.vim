@@ -16,7 +16,7 @@ M.bufferstr = function(maxwidth)
   local altbuf = vim.fn.bufnr('#')
   local bufs = {}
   local winwidth = maxwidth
-  if maxwidth <= 0 then
+  if !maxwidth or maxwidth <= 0 then
     winwidth = vim.api.nvim_win_get_width(0) - 50
   end
   local spacer = "  "
