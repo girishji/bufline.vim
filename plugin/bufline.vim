@@ -9,22 +9,37 @@ vim9script
 # display in statusline.
 
 g:loaded_bufline = true
-g:bufline_linenr = true
+
+var options: dict<any> = {
+    showbufnr: true,
+    emphasize: '[#', # [, %, #, or empty
+    highlight: false,
+}
+
+def! g:BuflineSetup(opt: dict<any>)
+    options->extend(opt)
+enddef
 
 def Bufstr(bufnr: number): string
     var bname = bufname(bufnr) != '' ? fnamemodify(bufname(bufnr), ":t") : '(No Name)'
     var mod = getbufvar(bufnr, "&mod") ? "[+]" : ""
-    var bufnrstr = bufnr('#') == bufnr && bufnr('%') != bufnr ? $'{bufnr}#' : $'{bufnr}'
-    return $'{bname}{mod}{g:bufline_linenr ? $',{bufnrstr}' : ""}'
+    var bufnrstr = options.emphasize =~ '#' && bufnr('#') == bufnr &&
+        bufnr('%') != bufnr ? $'{bufnr}#' : $'{bufnr}'
+    return $'{bname}{mod}{options.showbufnr ? $',{bufnrstr}' : ""}'
 enddef
 
-def! g:Bufline(maxwidth: number): string
-    var remaining = maxwidth
+def! g:BuflineGetstr(maxwidth: number = 0): string
+    var remaining = maxwidth <= 0 ? winwidth(0) - 50 : maxwidth
     var listedbufs = getbufinfo({buflisted: 1})
     var curbufnr = bufnr('%')
-    var curbufidx = listedbufs->indexof("v:val.bufnr == curbufnr")
+    var curbufidx = listedbufs->indexof((_, v) => v.bufnr == curbufnr)
     var curbufstr = Bufstr(curbufnr)
-    var bufliststr = $'%1*{curbufstr)}%*'
+    var higr = options.highlight ? '%4*' : ''
+    var empstrl = options.emphasize =~ '[' ? $'{higr}[%*' : ''
+    var empstrr = options.emphasize =~ '[' ? $'{higr}]%*' : ''
+    var empstr = options.emphasize =~ '%' ? $'{higr}%%%*' : ''
+    higr = options.highlight ? '%1*' : ''
+    var bufliststr = $'{empstrl}{higr}{curbufstr}%*{empstrr}{empstr}%*'
     remaining -= curbufstr->len()
     var idx = curbufidx - 1
     var hop = 2
@@ -35,11 +50,12 @@ def! g:Bufline(maxwidth: number): string
 	    var itembufnr = listedbufs[idx].bufnr
 	    var itemstr = Bufstr(itembufnr)
 	    remaining -= itemstr->len() + 2 # 2 space chars
-	    if remaining < 0 
-		bufliststr = forward ? $'{bufliststr}>' : $'<{bufliststr}'
+	    if remaining < 0
+		bufliststr = forward ? $'{bufliststr} >' : $'< {bufliststr}'
 		break
 	    endif
-	    itemstr = $'{bufnr("#") == itembufnr ? "%2*" : "%3*"}{itemstr}%*'
+	    higr = options.highlight ? bufnr('#') == itembufnr ? '%2*' : '%3*' : ''
+	    itemstr = $'{higr}{itemstr}%*'
 	    bufliststr = forward ? $'{bufliststr}  {itemstr}' : $'{itemstr}  {bufliststr}'
 	endif
 	idx += forward ? -hop : hop
@@ -48,7 +64,3 @@ def! g:Bufline(maxwidth: number): string
     endwhile
     return bufliststr
 enddef
-
-highlight user1 cterm=reverse   ctermbg=none ctermfg=none
-highlight user2 cterm=italic    ctermbg=none ctermfg=none
-highlight user3 cterm=none      ctermbg=none ctermfg=none
