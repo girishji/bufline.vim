@@ -9,7 +9,11 @@ space is wasted on statusline why not put it to good use?
 
 Implemented in both Vim9script and Lua.
 
+### Screenshot
+
 ![image](https://raw.githubusercontent.com/girishji/bufstatusline.nvim/main/screenshots/light.png)
+
+###  Demo
 
 [![asciicast](https://asciinema.org/a/o8gfuXMJ1SkEfpU2lnHxlYXWr.svg)](https://asciinema.org/a/o8gfuXMJ1SkEfpU2lnHxlYXWr)
 
@@ -20,7 +24,7 @@ Implemented in both Vim9script and Lua.
 
 # Installation
 
-Vim users install using [vim-plug](https://github.com/junegunn/vim-plug)
+Vim users can install using [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```
 vim9script
@@ -31,7 +35,7 @@ plug#end()
 
 Or use Vim's builtin package manager.
 
-Nvim users use [Lazy](https://github.com/folke/lazy.nvim)
+Nvim users could use [Lazy](https://github.com/folke/lazy.nvim)
 
 ```lua
 require("lazy").setup({
@@ -46,7 +50,8 @@ require("lazy").setup({
 Global function `g:BuflineGetstr()` returns the string containing buffer names
 with appropriate ellipsis and highlighting. You have to include this in
 `statusline` variable. It takes optional `maxwidth` argument which specifies
-string length.
+string length. If buffer list exceeds `maxwidth` then overflow is indicated
+using `<` on the left and/or `>` on the right.
 
 Here is an example how you might use this.
 
