@@ -13,7 +13,7 @@ Implemented in both Vim9script and Lua.
 
 ![image](https://raw.githubusercontent.com/girishji/bufstatusline.nvim/main/screenshots/light.png)
 
-###  Demo
+### Demo
 
 [![asciicast](https://asciinema.org/a/o8gfuXMJ1SkEfpU2lnHxlYXWr.svg)](https://asciinema.org/a/o8gfuXMJ1SkEfpU2lnHxlYXWr)
 
@@ -111,7 +111,7 @@ Following options are available.
 
 ```vim
 var options: dict<any> = {
-    showbufnr: true, # display buffer number next to name
+    showbufnr: false, # display buffer number next to name
     emphasize: '[#', # [, %, #, or empty
     highlight: false, # Use highlight groups if 'true'
 }
@@ -141,6 +141,16 @@ autocmd VimEnter * g:MyStatuslineSetup(v:true)
 ### Nvim
 
 Same as above except options are passed to `setup()`.
+
+```lua
+require("bufline").setup({
+  opts = {
+    showbufnr = false, -- displays buffer number next to buffer name
+    emphasize = '[#',  -- [, %, #, or empty
+    highlight = false, -- Use highlight groups if 'true'
+  },
+})
+```
 
 ### Highlight Groups
 

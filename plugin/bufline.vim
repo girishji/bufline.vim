@@ -11,7 +11,7 @@ vim9script
 g:loaded_bufline = true
 
 var options: dict<any> = {
-    showbufnr: true,
+    showbufnr: false,
     emphasize: '[#', # [, %, #, or empty
     highlight: false,
 }
