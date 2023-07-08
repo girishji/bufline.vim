@@ -15,7 +15,7 @@ Implemented in both Vim9script and Lua.
 
 ### Demo
 
-[![asciicast](https://asciinema.org/a/o8gfuXMJ1SkEfpU2lnHxlYXWr.svg)](https://asciinema.org/a/o8gfuXMJ1SkEfpU2lnHxlYXWr)
+[![asciicast](https://asciinema.org/a/zmJIdk2aDeiTLXhYE3b8qvHwy.svg)](https://asciinema.org/a/zmJIdk2aDeiTLXhYE3b8qvHwy)
 
 # Requirements
 
