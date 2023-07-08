@@ -125,6 +125,8 @@ These characters can be combined. Default is `[#`. Empty string removes all
 emphasis characters. You can still distinguish active buffer using highlight
 groups.
 
+Modified buffers are always shown with a `[+]` sign.
+
 `g:BuflineSetup()` is used to set options. It takes a dictionary.
 
 ```vim
