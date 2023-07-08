@@ -2,7 +2,7 @@
 
 I have been using statusline to permanently display buffer list. While
 switching buffers it helps to know what other buffers are open and which is the
-alternate buffer. This plugin does not set the statusline, but instead provides
+alternate buffer (`:b#`). This plugin does not set the statusline, but instead provides
 a buffer list suitable for including in statusline. There is some useful
 highlighting options to distinguish active and alternate buffers. Since so much
 space is wasted on statusline why not put it to good use?
@@ -111,7 +111,7 @@ Following options are available.
 
 ```vim
 var options: dict<any> = {
-    showbufnr: false, # display buffer number next to name
+    showbufnr: false, # display buffer number next to name (:b{num})
     emphasize: '[#', # [, %, #, or empty
     highlight: false, # Use highlight groups if 'true'
 }
@@ -140,17 +140,17 @@ autocmd VimEnter * g:MyStatuslineSetup(v:true)
 
 ### Nvim
 
-Same as above except options are passed to `setup()`.
-
 ```lua
 require("bufline").setup({
   opts = {
-    showbufnr = false, -- displays buffer number next to buffer name
+    showbufnr = false, -- displays buffer number next to buffer name (:b{num})
     emphasize = '[#',  -- [, %, #, or empty
     highlight = false, -- Use highlight groups if 'true'
   },
 })
 ```
+
+Same explanation as above for emphasis characters.
 
 ### Highlight Groups
 
