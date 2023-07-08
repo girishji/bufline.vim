@@ -51,9 +51,10 @@ Global function `g:BuflineGetstr()` returns the string containing buffer names
 with appropriate ellipsis and highlighting. You have to include this in
 `statusline` variable. It takes optional `maxwidth` argument which specifies
 string length. If buffer list exceeds `maxwidth` then overflow is indicated
-using `<` on the left and/or `>` on the right.
+by `<` on the left and/or `>` on the right.
 
-Here is an example how you might use this.
+Here is an example how you might use this. Configuration is in vim9script but
+you could easily convert this into legacy script.
 
 ```vim
 vim9script
@@ -70,10 +71,7 @@ augroup END
 
 ### Nvim
 
-Function `bufferstr()` returns the string containing buffer names
-with appropriate ellipsis and highlighting. You have to include this in
-`statusline` variable. It takes optional `maxwidth` argument which specifies
-string length.
+Function `bufferstr()` is used instead of `g:BuflineGetstr()`.
 
 Here is an example.
 
@@ -111,21 +109,21 @@ Following options are available.
 
 ```vim
 var options: dict<any> = {
-    showbufnr: false, # display buffer number next to name (:b{num})
-    emphasize: '[#', # [, %, #, or empty
+    showbufnr: false, # display buffer number next to name
+    emphasize: '[#',  # [, %, #, or empty
     highlight: false, # Use highlight groups if 'true'
 }
 ```
 
 Emphasis characters have following meaning:
 
-- `[`: Include parenthesis around active buffer name, `buf1 [active buf]  buf2  buf3 ...`
+- `[`: Include parenthesis around active buffer name, `buf1 [active buf]  buf2`
 - `%`: Include a percent sign next to active buffer
 - `#`: Include a pound sign next to alternate buffer
 
 These characters can be combined. Default is `[#`. Empty string removes all
 emphasis characters. You can still distinguish active buffer using highlight
-groups above.
+groups.
 
 `g:BuflineSetup()` is used to set options. It takes a dictionary.
 
@@ -140,10 +138,12 @@ autocmd VimEnter * g:MyStatuslineSetup(v:true)
 
 ### Nvim
 
+Same as above except `setup()` is used.
+
 ```lua
 require("bufline").setup({
   opts = {
-    showbufnr = false, -- displays buffer number next to buffer name (:b{num})
+    showbufnr = false, -- displays buffer number next to buffer name
     emphasize = '[#',  -- [, %, #, or empty
     highlight = false, -- Use highlight groups if 'true'
   },
@@ -154,7 +154,8 @@ Same explanation as above for emphasis characters.
 
 ### Highlight Groups
 
-Following highlight groups are available.
+Following highlight groups are available. If you are using any colorscheme set
+these highlights after you activate the colorscheme.
 
 - `User1`: Active buffer
 - `User2`: Alternate buffer
