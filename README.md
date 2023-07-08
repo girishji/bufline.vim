@@ -3,7 +3,7 @@
 I have been using statusline to permanently display buffer list. While
 switching buffers it helps to know what other buffers are open and which is the
 alternate buffer (`:b#`). This plugin does not set the statusline, but instead provides
-a buffer list suitable for including in statusline. There is some useful
+a buffer list suitable for including in statusline. There are some useful
 highlighting options to distinguish active and alternate buffers. Since so much
 space is wasted on statusline why not put it to good use?
 
