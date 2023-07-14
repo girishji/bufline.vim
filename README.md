@@ -1,13 +1,15 @@
 # bufline.vim
 
-I have been using statusline to permanently display buffer list. While
-switching buffers it helps to know what other buffers are open and which is the
-alternate buffer (`:b#`). This plugin does not set the statusline, but instead provides
-a buffer list suitable for including in statusline (`:h 'statusline'`). There are some useful
-highlighting options to distinguish active and alternate buffers. Since so much
-space is wasted on statusline why not put it to good use?
+I have been using Vim's statusline to permanently display buffer list. While working
+with many buffers it helps to know which other buffers are open, and if there
+is an alternate buffer (`:b#`) to quickly switch to. This plugin does not set
+the statusline (`:h 'statusline'`), but instead provides a buffer list suitable
+for displaying in statusline. This way you can configure the statusline to your liking.
+It is fully configurable with highlighting options to distinguish active and
+alternate buffers. Since so much space is wasted on statusline why not put it
+to good use?
 
-Implemented in both Vim9script and Lua.
+Implemented in both Vim9script and Lua, and compatible with both Vim and Neovim.
 
 ### Screenshot
 
@@ -48,9 +50,9 @@ require("lazy").setup({
 ### Vim
 
 Global function `g:BuflineGetstr()` returns the string containing buffer names
-with appropriate ellipsis and highlighting. You have to include this in
-`statusline` variable. It takes optional `maxwidth` argument which specifies
-string length. If buffer list exceeds `maxwidth` then overflow is indicated
+and appropriate overflow indicators with highlighting. You have to include this in
+Vim's `statusline` variable. It takes optional `maxwidth` argument which specifies
+the length of returned string. If buffer list exceeds `maxwidth` then overflow is indicated
 by `<` on the left and/or `>` on the right.
 
 Here is an example how you might use this. Configuration is in vim9script but
@@ -71,7 +73,8 @@ augroup END
 
 ### Nvim
 
-Function `bufferstr()` is used instead of `g:BuflineGetstr()`.
+Function `bufferstr()` returns the string containing buffer names. Other
+details are similar to Vim.
 
 Here is an example.
 
@@ -117,7 +120,7 @@ var options: dict<any> = {
 
 Emphasis characters have following meaning:
 
-- `[`: Include parenthesis around active buffer name, `buf1 [active buf]  buf2`
+- `[`: Include parenthesis around active buffer name, ex., `buf1  [active buf]  buf2`
 - `%`: Include a percent sign next to active buffer
 - `#`: Include a pound sign next to alternate buffer
 
@@ -140,7 +143,7 @@ autocmd VimEnter * g:MyStatuslineSetup(v:true)
 
 ### Nvim
 
-Same as above except `setup()` is used.
+Same as above except `setup()` function is used.
 
 ```lua
 require("bufline").setup({
@@ -152,12 +155,10 @@ require("bufline").setup({
 })
 ```
 
-Same explanation as above for emphasis characters.
-
 ### Highlight Groups
 
-Following highlight groups are available. If you are using any colorscheme set
-these highlights after you activate the colorscheme.
+Following highlight groups are available to set colors and style of text. If
+you are using a colorscheme, set these highlights after you activate the colorscheme.
 
 - `User1`: Active buffer
 - `User2`: Alternate buffer
