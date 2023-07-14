@@ -13,7 +13,7 @@ Implemented in both Vim9script and Lua, and compatible with both Vim and Neovim.
 
 ### Screenshot
 
-![image](https://raw.githubusercontent.com/girishji/bufline.nvim/main/screenshots/lightbg.png)
+![image](https://raw.githubusercontent.com/girishji/bufline.vim/main/screenshots/lightbg.png)
 
 ### Demo
 
