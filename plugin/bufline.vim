@@ -25,6 +25,7 @@ def Bufstr(bufnr: number): string
     var mod = getbufvar(bufnr, "&mod") ? "[+]" : ""
     var bufnrstr = options.emphasize =~ '#' && bufnr('#') == bufnr &&
         bufnr('%') != bufnr ? $'{bufnr}#' : $'{bufnr}'
+    # return $'{bname}%m{options.showbufnr ? $',{bufnrstr}' : ""}' # works but messes up length calculation
     return $'{bname}{mod}{options.showbufnr ? $',{bufnrstr}' : ""}'
 enddef
 
