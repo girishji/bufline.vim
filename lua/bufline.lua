@@ -3,7 +3,7 @@ local M = {}
 M.opts = {
   showbufnr = false, -- display buffer number
   emphasize = '[#',  -- [, #, %, or empty
-  highlight = false,
+  highlight = false, -- apply highlight groups User1, User2, ...
 }
 
 M.setup = function(opts)
