@@ -1,6 +1,6 @@
 if !has('vim9script') ||  v:version < 900
-  " Needs Vim version 9.0 and above
-  finish
+    " Needs Vim version 9.0 and above
+    finish
 endif
 
 vim9script
@@ -47,21 +47,21 @@ def! g:BuflineGetstr(maxwidth: number = 0): string
     var forward = false
     var idxmax = max([listedbufs->len() - 1 - curbufidx, curbufidx])
     while idx >= curbufidx - idxmax && idx <= curbufidx + idxmax
-	if idx >= 0 && idx < listedbufs->len()
-	    var itembufnr = listedbufs[idx].bufnr
-	    var itemstr = Bufstr(itembufnr)
-	    remaining -= itemstr->len() + 2 # 2 space chars
-	    if remaining < 0
-		bufliststr = forward ? $'{bufliststr} >' : $'< {bufliststr}'
-		break
-	    endif
-	    higr = options.highlight ? bufnr('#') == itembufnr ? '%2*' : '%3*' : ''
-	    itemstr = $'{higr}{itemstr}%*'
-	    bufliststr = forward ? $'{bufliststr}  {itemstr}' : $'{itemstr}  {bufliststr}'
-	endif
-	idx += forward ? -hop : hop
-	hop += 1
-	forward = !forward
+        if idx >= 0 && idx < listedbufs->len()
+            var itembufnr = listedbufs[idx].bufnr
+            var itemstr = Bufstr(itembufnr)
+            remaining -= itemstr->len() + 2 # 2 space chars
+            if remaining < 0
+                bufliststr = forward ? $'{bufliststr} >' : $'< {bufliststr}'
+                break
+            endif
+            higr = options.highlight ? bufnr('#') == itembufnr ? '%2*' : '%3*' : ''
+            itemstr = $'{higr}{itemstr}%*'
+            bufliststr = forward ? $'{bufliststr}  {itemstr}' : $'{itemstr}  {bufliststr}'
+        endif
+        idx += forward ? -hop : hop
+        hop += 1
+        forward = !forward
     endwhile
     return bufliststr
 enddef
