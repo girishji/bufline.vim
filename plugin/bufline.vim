@@ -23,10 +23,13 @@ enddef
 def Bufstr(bufnr: number): string
     var bname = bufname(bufnr) != '' ? fnamemodify(bufname(bufnr), ":t") : '(No Name)'
     var mod = getbufvar(bufnr, "&mod") ? "[+]" : ""
-    var bufnrstr = options.emphasize =~ '#' && bufnr('#') == bufnr &&
-        bufnr('%') != bufnr ? $'{bufnr}#' : $'{bufnr}'
-    # return $'{bname}%m{options.showbufnr ? $',{bufnrstr}' : ""}' # works but messes up length calculation
-    return $'{bname}{mod}{options.showbufnr ? $',{bufnrstr}' : ""}'
+    var altstr = options.emphasize =~ '#' && bufnr('#') == bufnr &&
+        bufnr('%') != bufnr ? '#' : ''
+    if options.showbufnr
+        return $'{altstr}{bname}{mod},{bufnr}'
+    else
+        return $'{altstr}{bname}{mod}'
+    endif
 enddef
 
 def! g:BuflineGetstr(maxwidth: number = 0): string
