@@ -43,7 +43,7 @@ def! g:BuflineGetstr(maxwidth: number = 0): string
     var empstrr = options.emphasize =~ '[' ? $'{higr}]%*' : ''
     var empstr = options.emphasize =~ '%' ? $'{higr}%%%*' : ''
     higr = options.highlight ? '%1*' : ''
-    var bufliststr = $'{empstrl}{empstr}{higr}{curbufstr}%*{empstrr}%*'
+    var bufliststr = $'{empstr}{empstrl}{higr}{curbufstr}%*{empstrr}%*'
     remaining -= curbufstr->len()
     var idx = curbufidx - 1
     var hop = 2
