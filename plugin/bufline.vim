@@ -12,7 +12,7 @@ g:loaded_bufline = true
 
 var options: dict<any> = {
     showbufnr: false,
-    emphasize: '<#', # <, [, %, #, or empty
+    emphasize: '%#', # <, [, %, #, or empty
     highlight: false,
 }
 
@@ -26,9 +26,9 @@ def Bufstr(bufnr: number): string
     var altstr = options.emphasize =~ '#' && bufnr('#') == bufnr &&
         bufnr('%') != bufnr ? '#' : ''
     if options.showbufnr
-        return $'{altstr}{bname}{mod},{bufnr}'
+        return $'{bname}{mod},{bufnr}{altstr}'
     else
-        return $'{altstr}{bname}{mod}'
+        return $'{bname}{mod}{altstr}'
     endif
 enddef
 
@@ -45,7 +45,7 @@ def! g:BuflineGetstr(maxwidth: number = 0): string
     empstrr = options.emphasize =~ '[' ? $'{higr}]%*' : empstrr
     var empstr = options.emphasize =~ '%' ? $'{higr}%%%*' : ''
     higr = options.highlight ? '%1*' : ''
-    var bufliststr = $'{empstr}{empstrl}{higr}{curbufstr}%*{empstrr}%*'
+    var bufliststr = $'{empstrl}{higr}{curbufstr}%*{empstrr}%*{empstr}%*'
     remaining -= curbufstr->len()
     var idx = curbufidx - 1
     var hop = 2
