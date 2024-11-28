@@ -32,20 +32,45 @@ def Bufstr(bufnr: number): string
     endif
 enddef
 
+def HL(grp: number): string
+    return options.highlight ? (!hlget('user' .. grp)->empty() ? $'%{grp}*' : '') : ''
+enddef
+
+# Assign default highlight attributes if option is set but highlight groups are undefined.
+def DefaultHL()
+    def Defined(grp: string): bool
+        return !hlget(grp)->empty()
+    enddef
+    if options.highlight &&
+            range(1, 4)->mapnew((_, v) => Defined($'user{v}')) == repeat([false], 4)
+        var hlattr = hlget('StatusLine', true)
+        if !hlattr->empty()
+            var fg = hlattr[0]->get("ctermfg", "None")
+            var bg = hlattr[0]->get("ctermbg", "None")
+            if fg != 'None' || bg != 'None'
+                highlight user1 cterm=bold,underline
+                for grp in ['user1', 'user2', 'user3', 'user4']
+                    exec 'highlight' grp $'ctermfg={fg} ctermbg={bg}'
+                endfor
+            endif
+        endif
+    endif
+enddef
+
 def! g:BuflineGetstr(maxwidth: number = 0): string
+    DefaultHL()
     var remaining = maxwidth <= 0 ? winwidth(0) - 50 : maxwidth
     var listedbufs = getbufinfo({buflisted: 1})
     var curbufnr = bufnr('%')
     var curbufidx = listedbufs->indexof((_, v) => v.bufnr == curbufnr)
     var curbufstr = Bufstr(curbufnr)
-    var higr = options.highlight ? '%4*' : ''
+    var higr = HL(4)
     var empstrl = options.emphasize =~ '<' ? $'{higr}<%*' : ''
     var empstrr = options.emphasize =~ '<' ? $'{higr}>%*' : ''
     empstrl = options.emphasize =~ '[' ? $'{higr}[%*' : empstrl
     empstrr = options.emphasize =~ '[' ? $'{higr}]%*' : empstrr
     var empstr = options.emphasize =~ '%' ? $'{higr}%%%*' : ''
-    higr = options.highlight ? '%1*' : ''
-    var bufliststr = $'{empstrl}{higr}{curbufstr}%*{empstrr}%*{empstr}%*'
+    var bufliststr = $'{empstrl}{HL(1)}{curbufstr}%*{empstrr}%*{empstr}%*'
     remaining -= curbufstr->len()
     var idx = curbufidx - 1
     var hop = 2
@@ -60,7 +85,7 @@ def! g:BuflineGetstr(maxwidth: number = 0): string
                 bufliststr = forward ? $'{bufliststr} >' : $'< {bufliststr}'
                 break
             endif
-            higr = options.highlight ? bufnr('#') == itembufnr ? '%2*' : '%3*' : ''
+            higr = bufnr('#') == itembufnr ? HL(2) : HL(3)
             itemstr = $'{higr}{itemstr}%*'
             bufliststr = forward ? $'{bufliststr}  {itemstr}' : $'{itemstr}  {bufliststr}'
         endif
