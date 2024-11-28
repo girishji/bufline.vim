@@ -38,21 +38,22 @@ enddef
 
 # Assign default highlight attributes if option is set but highlight groups are undefined.
 def DefaultHL()
-    def Defined(grp: string): bool
-        return !hlget(grp)->empty()
+    def Defined(grp: number): bool
+        return !hlget($'user{grp}')->empty()
     enddef
     if options.highlight &&
-            range(1, 4)->mapnew((_, v) => Defined($'user{v}')) == repeat([false], 4)
+            range(1, 4)->map((_, v) => Defined(v)) == repeat([false], 4)
         var hlattr = hlget('StatusLine', true)
+        highlight user1 cterm=bold,underline
         if !hlattr->empty()
             var fg = hlattr[0]->get("ctermfg", "None")
             var bg = hlattr[0]->get("ctermbg", "None")
-            if fg != 'None' || bg != 'None'
-                highlight user1 cterm=bold,underline
-                for grp in ['user1', 'user2', 'user3', 'user4']
-                    exec 'highlight' grp $'ctermfg={fg} ctermbg={bg}'
-                endfor
-            endif
+            var ct = hlattr[0]->get("cterm", {})->items()->map((_, v) => v[1] ? v[0] : '')
+            var cterm = ct->copy()->filter((_, v) => v != '')->join(',')
+            for grp in ['user1', 'user2', 'user3', 'user4']
+                exec 'highlight' grp $'ctermfg={fg} ctermbg={bg} {cterm != "" ? ("cterm=" .. cterm) : ""}'
+            endfor
+            exec $'highlight user1 cterm={cterm != "" ? (cterm .. ",") : ""}bold,underline'
         endif
     endif
 enddef
