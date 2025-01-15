@@ -12,7 +12,7 @@ g:loaded_bufline = true
 
 var options: dict<any> = {
     showbufnr: false,
-    emphasize: '%#', # <, [, %, #, or empty
+    emphasize: '|#', # <, |, [, %, #, or empty
     highlight: false,
 }
 
@@ -53,7 +53,7 @@ def DefaultHL()
             for grp in ['user1', 'user2', 'user3', 'user4']
                 exec 'highlight' grp $'ctermfg={fg} ctermbg={bg} {cterm != "" ? ("cterm=" .. cterm) : ""}'
             endfor
-            exec $'highlight user1 cterm={cterm != "" ? (cterm .. ",") : ""}bold,underline'
+            # exec $'highlight user1 cterm={cterm != "" ? (cterm .. ",") : ""}bold,underline'
         endif
     endif
 enddef
@@ -70,6 +70,8 @@ def! g:BuflineGetstr(maxwidth: number = 0): string
     var empstrr = options.emphasize =~ '<' ? $'{higr}>%*' : ''
     empstrl = options.emphasize =~ '[' ? $'{higr}[%*' : empstrl
     empstrr = options.emphasize =~ '[' ? $'{higr}]%*' : empstrr
+    empstrl = options.emphasize =~ '|' ? $'{higr}|%*' : empstrl
+    empstrr = options.emphasize =~ '|' ? $'{higr}|%*' : empstrr
     var empstr = options.emphasize =~ '%' ? $'{higr}%%%*' : ''
     var bufliststr = $'{empstrl}{HL(1)}{curbufstr}%*{empstrr}%*{empstr}%*'
     remaining -= curbufstr->len()
